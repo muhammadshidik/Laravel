@@ -19,11 +19,11 @@
                         <i class="bi bi-circle"></i><span>Services</span>
                     </a>
                 </li>
-                {{-- <li>
-                    <a href="components-accordion.html">
-                        <i class="bi bi-circle"></i><span>Accordion</span>
+                <li>
+                    <a href="{{ route('level.index') }}">
+                        <i class="bi bi-circle"></i><span>Level</span>
                     </a>
-                </li>
+                    {{-- </li>
                 <li>
                     <a href="components-badges.html">
                         <i class="bi bi-circle"></i><span>Badges</span>
