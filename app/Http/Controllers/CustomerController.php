@@ -12,10 +12,10 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        //opsional $datas = Levels::all();
-        $title = "Data customers";
-        $datas = Customers::orderBy('id', 'desc')->get();
-        return view('customers.index', compact('datas', 'title')); // menambahkan 'title' untuk memunculkan nama halaman di url
+        // $datas =  Levels::all();
+        $datas =  Customers::orderBy('id', 'desc')->get();
+        $title = "Data Pelanggan";
+        return view('customer.index', compact('datas', 'title'));
     }
 
     /**
@@ -23,7 +23,7 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        $title = "Tambah customer";
+        $title = "Tambah Pelanggan";
         return view('customer.create', compact('title'));
     }
 
@@ -32,8 +32,9 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        $customer = Customers::create($request->all());
-        return redirect()->to('customer');
+        // return $request;
+        Customers::create($request->all());
+        return redirect()->to('customer')->with('success', 'Data berhasil ditambah');
     }
 
     /**
@@ -49,11 +50,11 @@ class CustomerController extends Controller
      */
     public function edit(string $id)
     {
-        $title = "Ubah customer";
-        $customer = Customers::find($id); //blank
-        //cara kedua : $level = Levels::findOrFail($id); //404
-        //cara ketiga $level = Levels::where('id', $id)->first();
-        return view('customer.edit', compact('customer', 'title'));
+        $edit = Customers::find($id); //blank
+        $title = "Ubah Pelanggan";
+        // $level = Levels::findOrFail($id); //404
+        // $level = Levels::where('id', $id)->first();
+        return view('customer.edit', compact('edit', 'title'));
     }
 
     /**
@@ -63,10 +64,10 @@ class CustomerController extends Controller
     {
         $customer = Customers::find($id);
         $customer->name = $request->name;
-        $customer->phone = $request->phone;;
+        $customer->phone = $request->phone;
         $customer->address = $request->address;
         $customer->save();
-        return redirect()->to('customer')->with('Success', 'Data Berhasil Diubah !');
+        return redirect()->to('customer')->with('success', 'Data Berhasil di Ubah');
     }
 
     /**
@@ -76,6 +77,6 @@ class CustomerController extends Controller
     {
         $customer = Customers::find($id);
         $customer->delete();
-        return redirect()->to('customer')->with('Success', 'Data Berhasil DiHapus !');
+        return redirect()->to('customer')->with('success', 'Data Berhasil di Hapus');
     }
 }

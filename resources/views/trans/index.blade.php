@@ -6,27 +6,29 @@
                 <div class="card-body">
                     <h3 class="card-title">{{ $title }}</h3>
                     <div class="mb-3" align="right">
-                        <a href="{{ route('customer.create') }}" class="btn btn-success">Tambah</a>
+                        <a href="{{ route('trans.create') }}" class="btn btn-success">Tambah</a>
 
                     </div>
                     <table class="table table-bordered">
                         <tr>
                             <th>No</th>
-                            <th>Nama </th>
-                            <th>Telp</th>
-                            <th>Alamat</th>
+                            <th>No Pesanan</th>
+                            <th>Pelanggan</th>
+                            <th>Tanggal Selesai</th>
+                            <th>Status</th>
                             <th>Aksi</th>
                         </tr>
                         @foreach ($datas as $index => $data)
                             <tr>
+                                //$data->customer->(sebutkan namanya) buat manggil
                                 <td>{{ $index += 1 }}</td>
-                                <td>{{ $data->name }}</td>
-                                <td>{{ $data->phone }}</td>
-                                <td>{{ $data->address }}</td>
+                                <td>{{ $data->order_code }}</td>
+                                <td>{{ $data->customer->name }}</td>
+                                <td>{{ $data->order_end_date }}</td>
+                                <td>{{ $data->status_text }}</td>
                                 <td>
-                                    <a href="{{ route('customer.edit', $data->id) }}"
-                                        class="btn btn-primary btn-sm">Edit</a>
-                                    <form action="{{ route('customer.destroy', $data->id) }}" method="post"
+                                    <a href="{{ route('trans.show', $data->id) }}" class="btn btn-primary btn-sm">Edit</a>
+                                    <form action="{{ route('trans.destroy', $data->id) }}" method="post"
                                         style="display: inline">
                                         @csrf
                                         @method('DELETE')

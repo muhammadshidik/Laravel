@@ -7,16 +7,16 @@
                     <h3 class="card-title">
                         {{ $title }}
                     </h3>
-                    <form action="{{ route('customer.store') }}" method="post">
+                    <form action="{{ route('user.store') }}" method="post">
                         @csrf
                         <label for="" class="form-lable">Nama *</label>
                         <input type="text" class="form-control" name="name" required>
 
-                        <label for="" class="form-label">Telp</label>
-                        <input type="number" class="form-control" name="phone">
+                        <label for="" class="form-label">Email</label>
+                        <input type="email" class="form-control" name="email">
 
-                        <label for="" class="form-label">Alamat</label>
-                        <textarea name="address" class="form-control" cols="30" rows="5"></textarea>
+                        <label for="" class="form-label">Password</label>
+                        <input type="password" class="form-control" name="password">
 
                         <button type="submit" class="btn btn-primary mt-2">Simpan</button>
                         <a href="{{ url()->previous() }}" class="btn btn-secondary mt-2">Kembali</a>
