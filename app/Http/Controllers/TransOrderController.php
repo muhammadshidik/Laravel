@@ -8,12 +8,23 @@ use App\Models\TransOrders;
 use App\Models\TypeOfServices;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Midtrans\Config;
+use Midtrans\Snap;
 
 class TransOrderController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    public function __construct()
+    {
+        Config::$serverKey = env('MITRANS_SERVER_KEY');
+        Config::$isProduction = env('MITRANS_IS_PRODUCTION', false);
+        Config::$isSanitized = true;
+        Config::$is3ds = true;
+    }
+
+
     public function index()
     {
         $title = "Transaksi Order";
@@ -44,28 +55,28 @@ class TransOrderController extends Controller
      */
     public function store(Request $request)
     {
-        //buat validasi
         $request->validate([
-            'order_end_date' => 'required '
+            'order_end_date' => 'required'
         ]);
-        $transOrder =  TransOrders::create([
+
+        $transOrder = TransOrders::create([
             'id_customer' => $request->id_customer,
             'order_code' => $request->order_code,
             'order_end_date' => $request->order_end_date,
             'total' => $request->grand_total
         ]);
-        // dari javascript untuk perhitungan
+
         foreach ($request->id_service as $key => $idProduct) {
-            $id_trans =  $transOrder->id;
-            // AMBIL dari javascript
+            $id_trans = $transOrder->id;
             TransDetails::create([
                 'id_trans' => $id_trans,
                 'id_service' => $idProduct,
                 'qty' => $request->qty[$key],
                 'subtotal' => $request->total[$key]
             ]);
-            return redirect()->route('trans.index')->with('status', 'Berhasil');
         }
+
+        return redirect()->route('trans.index')->with('status', 'Berhasil');
     }
 
     /**
@@ -73,9 +84,32 @@ class TransOrderController extends Controller
      */
     public function show(string $id)
     {
-        //
-    }
 
+        $title = "Detail Transaksi";
+        $details = TransOrders::with(['customer', 'details.service'])->where('id', $id)->first();
+        // return $details;
+
+        $params = [
+            'transaction_details' => [
+                'order_id' => rand(),
+                'gross_amount' => 10.000,
+            ],
+            'customer_details' => [
+                'first_name' => "Bambang",
+                'last_name' => "Pamungkas",
+                'email' => "bambang@gmail.com",
+                'phone' => "08994212290",
+            ],
+            'enable_payment' => [
+                'qris'
+            ],
+
+        ];
+
+        // $snapToken = Snap::getSnapToken($params);
+        $snapToken = Snap::createTransaction($params);
+        return view('trans.show', compact('title', 'details', 'snapToken'));
+    }
     /**
      * Show the form for editing the specified resource.
      */
@@ -98,5 +132,16 @@ class TransOrderController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function printStruk(string $id)
+    {
+        $details = TransOrders::with(['customer', 'details.service'])->where('id', $id)->first();
+
+        // buat debugging
+        //1. return $details;
+        //2. dd($details)
+
+        return view('trans.print', compact('details'));
     }
 }

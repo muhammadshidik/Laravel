@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 01 Jul 2025 pada 10.10
+-- Waktu pembuatan: 02 Jul 2025 pada 10.36
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.2.12
 
@@ -82,7 +82,10 @@ CREATE TABLE `customers` (
 --
 
 INSERT INTO `customers` (`id`, `name`, `phone`, `address`, `created_at`, `updated_at`) VALUES
-(1, 'Muhammad Reihan Perdana', '085710590044', 'Jl.Warakas II GGIIB NO5B RT005 RW02 KEL.WARAKAS KEC.TANJUNG PRIOK', '2025-06-30 22:10:42', '2025-06-30 22:10:42');
+(1, 'Muhammad Reihan Perdana', '085710590044', 'Jakarta Utara', '2025-06-30 22:10:42', '2025-07-01 21:49:28'),
+(2, 'Muhammad Siddiq', '089684758768', 'Jakarta Timur', '2025-07-01 21:47:59', '2025-07-01 21:49:18'),
+(3, 'Abdul Faqih', '085710590044', 'Jakarta Barat', '2025-07-01 21:49:52', '2025-07-01 21:49:52'),
+(4, 'Agra Saputra', '085710590044', 'Sawangan', '2025-07-01 21:50:12', '2025-07-01 21:50:12');
 
 -- --------------------------------------------------------
 
@@ -173,7 +176,9 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (6, '2025_06_30_012513_create_levels_table', 1),
 (7, '2025_07_01_024126_create_customers_table', 2),
 (8, '2025_07_01_024304_create_trans_orderes_table', 3),
-(9, '2025_07_01_024410_create_trans_details_table', 4);
+(9, '2025_07_01_024410_create_trans_details_table', 4),
+(10, '2025_07_02_020742_create_trans_orders_table', 1),
+(11, '2025_07_02_020912_create_trans_details_table', 5);
 
 -- --------------------------------------------------------
 
@@ -207,7 +212,7 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('TQ9rzsueutzKhVbQZwVkiLJ1z48HArPvoF8aoAD3', 2, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiWXFCdUtQbHFqaFpmTkNIQUZ3TG9aZHVrWW5qVExhWkFBaXROSzQ5ViI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjM0OiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvdHJhbnMvY3JlYXRlIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6Mjt9', 1751357109);
+('MIjz7SmQZH5CDLs69wUlG5tV5l1RR6BRsIHlR1Wg', 2, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoia2xJaHJjRjdMN1FTU2NKcEo0RHJqYkpIWlpuUVY0Q1ZtOEdncTRKQiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzA6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC90cmFucy8xNyI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjI7fQ==', 1751445099);
 
 -- --------------------------------------------------------
 
@@ -226,6 +231,14 @@ CREATE TABLE `trans_details` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data untuk tabel `trans_details`
+--
+
+INSERT INTO `trans_details` (`id`, `id_trans`, `id_service`, `qty`, `subtotal`, `note`, `created_at`, `updated_at`) VALUES
+(3, 17, 4, 13, 104000, NULL, '2025-07-01 22:08:31', '2025-07-01 22:08:31'),
+(4, 18, 4, 1, 8000, NULL, '2025-07-01 22:10:08', '2025-07-01 22:10:08');
+
 -- --------------------------------------------------------
 
 --
@@ -238,12 +251,20 @@ CREATE TABLE `trans_orders` (
   `order_code` varchar(30) NOT NULL,
   `order_end_date` date NOT NULL,
   `order_status` tinyint(4) DEFAULT 0,
-  `order_pay` int(11) NOT NULL,
-  `order_change` int(11) NOT NULL,
-  `total` int(11) NOT NULL,
+  `order_pay` int(11) DEFAULT NULL,
+  `order_change` int(11) DEFAULT NULL,
+  `total` int(11) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `trans_orders`
+--
+
+INSERT INTO `trans_orders` (`id`, `id_customer`, `order_code`, `order_end_date`, `order_status`, `order_pay`, `order_change`, `total`, `created_at`, `updated_at`) VALUES
+(17, 3, 'TR-02072025-001', '2025-07-02', 0, NULL, NULL, NULL, '2025-07-01 22:08:31', '2025-07-01 22:08:31'),
+(18, 4, 'TR-02072025-001', '2025-07-25', 0, NULL, NULL, NULL, '2025-07-01 22:10:08', '2025-07-01 22:10:08');
 
 -- --------------------------------------------------------
 
@@ -266,7 +287,10 @@ CREATE TABLE `type_of_services` (
 --
 
 INSERT INTO `type_of_services` (`id`, `service_name`, `price`, `description`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'Laundry Besar', 5000, 'qqqqqqqqqqqq', '2025-06-30 22:21:40', '2025-06-30 22:21:40', NULL);
+(2, 'Hanya Cuci', 5000, 'service hanya cuci reguler', NULL, NULL, NULL),
+(3, 'Hanya Gosok', 4000, 'service ini hanya gosok reguler', NULL, NULL, NULL),
+(4, 'Cuci dan Gosok', 8000, 'service hanya cuci reguler', NULL, NULL, NULL),
+(5, 'Hanya Cuci', 5000, 'service hanya cuci reguler', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -408,7 +432,7 @@ ALTER TABLE `counts`
 -- AUTO_INCREMENT untuk tabel `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT untuk tabel `failed_jobs`
@@ -432,31 +456,31 @@ ALTER TABLE `levels`
 -- AUTO_INCREMENT untuk tabel `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT untuk tabel `trans_details`
 --
 ALTER TABLE `trans_details`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT untuk tabel `trans_orders`
 --
 ALTER TABLE `trans_orders`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT untuk tabel `type_of_services`
 --
 ALTER TABLE `type_of_services`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT untuk tabel `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)

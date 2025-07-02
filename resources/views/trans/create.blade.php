@@ -11,7 +11,7 @@
                         @csrf
                         <div class="row">
                             <div class="col-sm-6">
-                                <label for="" class="form-lable">No Pesanan </label>
+                                <label for="" class="form-label">No Pesanan</label>
                                 <input type="text" class="form-control" name="order_code" readonly
                                     value="{{ $ordercode ?? '' }}">
                                 <div class="mt-3 mb-3">
@@ -23,7 +23,6 @@
                                         @endforeach
                                     </select>
                                 </div>
-
                                 <div class="mt-3 mb-3">
                                     <label for="" class="form-label">Paket</label>
                                     <select id="id_service" class="form-control">
@@ -34,43 +33,35 @@
                                         @endforeach
                                     </select>
                                 </div>
+                                <div class="mt-3 mb-3">
+                                    <label for="" class="form-label">End Order</label>
+                                    <input type="date" name="order_end_date" class="form-control">
+                                </div>
+
+                                <label for="" class="form-label">Catatan</label>
+                                <textarea name="note" class="form-control" cols="30" rows="5"></textarea>
                             </div>
                         </div>
-
 
                         <div class="mt-3 mb-3">
                             <div align="right" class="mb-3">
                                 <button type="button" class="btn btn-primary addRow">Tambah Row</button>
-                                {{-- buat nambah
-                                javascriptnya naro addRownya di class --}}
                             </div>
                             <table class="table table-bordered" id="myTable">
-                                {{-- buat nambah
-                                javascriptnya naro mytable di id --}}
                                 <thead>
                                     <tr>
                                         <th>No</th>
                                         <th>Paket</th>
                                         <th>Qty</th>
                                         <th>Subtotal</th>
-                                        <th>Aksi</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                </tbody>
+                                <tbody></tbody>
                             </table>
-                            <p> <strong>Grand Total : Rp. <span id="grandTotal"></span></strong> </p>
-                            <input type="hidden" name="grand_total" id="grandTotalInput" value="0">
+                            <p><strong>Grand Total: Rp. <span id="grandTotal">0</span></strong></p>
+                            <input type="number" name="grand_total" id="grandTotalInput" value="0">
                         </div>
-                        {{-- membuat end date --}}
-                        <div class="mt-3 mb-3">
-                            <label for="" class="form-label">End Order</label>
-                            <input type="date" name="order-end-date" class="form-control" id="">
-                        </div>
-
-                        <label for="" class="form-label">Catatan</label>
-                        <textarea name="note" class="form-control" cols="30" rows="5"></textarea>
-
                         <button type="submit" class="btn btn-primary mt-2">Simpan</button>
                         <a href="{{ url()->previous() }}" class="btn btn-secondary mt-2">Kembali</a>
                     </form>

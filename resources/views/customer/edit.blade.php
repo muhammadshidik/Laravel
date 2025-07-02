@@ -17,7 +17,7 @@
                         <input type="number" class="form-control" name="phone" value="{{ $edit->phone }}" required>
 
                         <label for="" class="form-label">Alamat</label>
-                        <textarea name="alamat" class="form-control" cols="30" rows="5">{{ $edit->alamat }}</textarea>
+                        <textarea name="address" class="form-control" cols="30" rows="5">{{ $edit->alamat }}</textarea>
 
                         <button type="submit" class="btn btn-primary mt-2">Simpan perubahan</button>
                         <a href="{{ url()->previous() }}" class="btn btn-secondary mt-2">Kembali</a>
