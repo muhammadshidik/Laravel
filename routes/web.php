@@ -26,6 +26,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('user', App\Http\Controllers\UserController::class);
     Route::resource('trans', App\Http\Controllers\TransOrderController::class);
     Route::get('print_struk/{id}', [App\Http\Controllers\TransOrderController::class, 'printStruk'])->name('print_struk');
+    Route::post('trans/{id}/snap', [App\Http\Controllers\TransOrderController::class, 'snap'])->name('trans.snap');;
 });
 
 //resource:mengatur semua route, mencakup get, post, delete tanpa dibuat lg. maksudnya buat cover semua dari resource(get, push, delete, post). hanya sekali saja

@@ -18,12 +18,11 @@ class TransOrderController extends Controller
      */
     public function __construct()
     {
-        Config::$serverKey = env('MITRANS_SERVER_KEY');
-        Config::$isProduction = env('MITRANS_IS_PRODUCTION', false);
+        Config::$serverKey = env('MIDTRANS_SERVER_KEY');
+        Config::$isProduction = env('MIDTRANS_IS_PRODUCTION', false);
         Config::$isSanitized = true;
         Config::$is3ds = true;
     }
-
 
     public function index()
     {
@@ -37,17 +36,18 @@ class TransOrderController extends Controller
      */
     public function create()
     {
-        //TR-0101010101-001
-        //$today = date('dmY');
+        //TR-01072025-001
+        // $today = date('dmY');
         $today = Carbon::now()->format('dmY');
-        $countDay = TransOrders::whereDay('created_at', now()->toDateString())->count() + 1;
-        $runningNumber = str_pad($countDay, 3, '0', STR_PAD_LEFT); //000
+        $countDay = TransOrders::whereDate('created_at', now()->toDateString())->count() + 1;
+        $runningNumber = str_pad($countDay, 3, '0', STR_PAD_LEFT); //001
         $title = "Tambah Transaksi";
-        $ordercode = "TR-" . $today . "-" . $runningNumber;
+        $orderCode = "TR-" . $today . "-" . $runningNumber;
 
-        $customers = Customers::orderBy('id', 'desc')->get();
-        $services = TypeOfServices::orderBy('id', 'desc')->get();
-        return view('trans.create', compact('customers', 'title', 'ordercode', 'services'));
+        $customers = Customers::OrderBy('id', 'desc')->get();
+        $services = TypeOfServices::OrderBy('id', 'desc')->get();
+
+        return view('trans.create', compact('title', 'orderCode', 'customers', 'services'));
     }
 
     /**
@@ -66,7 +66,7 @@ class TransOrderController extends Controller
             'total' => $request->grand_total
         ]);
 
-        foreach ($request->id_service as $key => $idProduct) {
+        foreach ($request->id_product as $key => $idProduct) {
             $id_trans = $transOrder->id;
             TransDetails::create([
                 'id_trans' => $id_trans,
@@ -95,10 +95,10 @@ class TransOrderController extends Controller
                 'gross_amount' => 10.000,
             ],
             'customer_details' => [
-                'first_name' => "Bambang",
-                'last_name' => "Pamungkas",
-                'email' => "bambang@gmail.com",
-                'phone' => "08994212290",
+                'first_name' => "Muhammad",
+                'last_name' => "siddiq",
+                'email' => "sidiksadar11@gmail.com",
+                'phone' => "089684758768",
             ],
             'enable_payment' => [
                 'qris'
@@ -110,6 +110,7 @@ class TransOrderController extends Controller
         $snapToken = Snap::createTransaction($params);
         return view('trans.show', compact('title', 'details', 'snapToken'));
     }
+
     /**
      * Show the form for editing the specified resource.
      */
@@ -137,11 +138,8 @@ class TransOrderController extends Controller
     public function printStruk(string $id)
     {
         $details = TransOrders::with(['customer', 'details.service'])->where('id', $id)->first();
-
-        // buat debugging
-        //1. return $details;
-        //2. dd($details)
-
+        // return $details;
+        // // dd($details);
         return view('trans.print', compact('details'));
     }
 }

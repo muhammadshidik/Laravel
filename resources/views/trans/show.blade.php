@@ -53,7 +53,7 @@
             <div class="card">
                 <div class="card-body">
                     <h3 class="card-title">Transaksi Order Detail</h3>
-                    <form action="" method="POST">
+                    <form action="" method="POST" id="paymentForm" data-order-id="{{ $details->id }}">
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
@@ -87,25 +87,27 @@
                                 <tr>
                                     <th colspan="3">Bayar :</th>
                                     <td colspan="2" class="text-right" align="right">
-                                        <input type="number" class="form-control" id="order_pay" nama="order_pay" required>
+                                        <input type="number" class="form-control" id="order_pay" name="order_pay" required>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th colspan="3">Kembali :</th>
                                     <td colspan="2" class="text-right" align="right">
                                         <input type="text" class="form-control" id="order_change_display"
-                                            nama="order_change_display" readonly>
-                                        <input type="hidden" class="form-control" id="order_change" nama="order_change"
+                                            name="order_change_display" readonly>
+                                        <input type="hidden" class="form-control" id="order_change" name="order_change"
                                             required>
                                     </td>
                                 </tr>
                             </tfoot>
                         </table>
+                        <div class="mt-3">
+                            <button class="btn btn-primary" type="submit" name="payment_method"
+                                value="cash">Bayar</button>
+                            <button class="btn btn-success" type="submit" name="payment_method"
+                                value="midTrans">Cashless</button>
+                        </div>
                     </form>
-                    <div class="mt-3">
-                        <button class="btn btn-primary" name="cash">Bayar Cash</button>
-                        <button class="btn btn-primary" name="cashles">Cashless</button>
-                    </div>
                 </div>
             </div>
         </div>
